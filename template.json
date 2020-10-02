@@ -1,0 +1,16 @@
+{
+   "apiVersion":"camel.apache.org/v1",
+   "kind":"Integration",
+   "metadata":{
+      "name":"hello-another",
+      "namespace":"default"
+   },
+   "spec":{
+      "sources":[
+         {
+            "content":"from('timer:tick?period=3000')\n  .setBody().constant('Hello world from Camel K2!')\n  .to('log:info')\n",
+            "name":"hello.groovy"
+         }
+      ]
+   }
+}

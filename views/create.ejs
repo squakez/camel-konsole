@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Integration: create</title>
+
+		<!-- code mirror -->
+		<link rel=stylesheet href="/codemirror-5.58.1/doc/docs.css">
+		<link rel="stylesheet" href="/codemirror-5.58.1/lib/codemirror.css">
+		<link rel="stylesheet" href="/codemirror-5.58.1/addon/hint/show-hint.css">
+		<script src="/codemirror-5.58.1/lib/codemirror.js"></script>
+		<script src="/codemirror-5.58.1/addon/hint/show-hint.js"></script>
+		<script src="/codemirror-5.58.1/addon/hint/anyword-hint.js"></script>
+		<script src="/codemirror-5.58.1/mode/groovy/groovy.js"></script>
+		<!-- code mirror -->
+
+		<script src="/js/client.js"></script>
+	</head>
+
+	<body>
+
+	<div class="content">
+		<h1>Create a new integration</h1>
+		<form>
+			<input id="NAME" name="name" type="text" placeholder="my-integration.groovy" />
+			<br><br>
+			<textarea id="INTEGRATION" name="integration" placeholder="from('timer:tick?period=3000')\n  .setBody().constant('Hello world from Camel K!')\n  .to('log:info')\n"></textarea>
+			<br><br>
+			<div id="BUTTON">
+					<button onclick="postIntegration(getCode()); return false;">Create!</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+	 CodeMirror.commands.autocomplete = function(cm) {
+		 cm.showHint({hint: CodeMirror.hint.anyword});
+	 }
+
+	 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
+		 lineNumbers: true,
+		 extraKeys: {"Ctrl-Space": "autocomplete"}
+	 });
+
+	 function getCode(){
+		 var text = editor.getValue();
+		 return text;
+	 }
+ </script>
+
+</body>
+</html>

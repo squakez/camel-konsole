@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>List of integrations for <%= namespace%> namespace</title>
+		<script src="/js/client.js"></script>
+	</head>
+
+	<body>
+
+	<div class="content">
+		<h1>List of integrations for <%= namespace%> namespace</h1>
+		<ul class="list">
+			<% for(var i=0; i < integrations.length; i++) {
+				%>
+				<li id="<%= integrations[i].metadata.name %>">
+					<div class="list-li-title">
+						<%= integrations[i].metadata.name %>
+						[<%= integrations[i].status.phase %>] -
+						[<a href="/namespace/<%= namespace%>/integration/<%= integrations[i].metadata.name%>">edit</a>]
+						[<a href="#" onclick="deleteIntegration('<%= integrations[i].metadata.name %>'); return false;">delete</a>]
+					</div>
+				</li>
+			<% } %>
+		</ul>
+		<div><a href="./create">+ Create a new integration</a></div>
+	</div>
+
+</body>
+</html>
