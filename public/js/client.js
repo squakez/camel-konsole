@@ -1,14 +1,38 @@
-function postIntegration(integration){
+function login(){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 201 ) {
+        location.href="/"
+    } else {
+      printLoginFailed(this.status);
+    }
+  };
+  xhttp.open("POST", "/login", true);
+  var user = document.getElementById("USER");
+  var password = document.getElementById("PASSWORD");
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  var payload = JSON.stringify({ "user": user.value, "password": password.value });
+
+  xhttp.send(payload);
+}
+
+function printLoginFailed(httpStatusCode){
+  document.getElementById("MESSAGE").innerHTML = "<div>Login failed because error code " + httpStatusCode + "</div>";
+}
+
+function postIntegration(namespace, integration){
+  var name = document.getElementById("NAME");
+  var permission = document.getElementById("PERMISSION");
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4) {
         printPostResult(this.status);
+        location.href="./integration/"+name.value
     }
   };
-  xhttp.open("POST", "/namespace/default/integration", true);
-  var name = document.getElementById("NAME");
+  xhttp.open("POST", "/namespace/" + namespace + "/integration", true);
   xhttp.setRequestHeader("Content-Type", "application/json");
-  var payload = JSON.stringify({ "name": name.value, "integration": integration });
+  var payload = JSON.stringify({ "name": name.value, "integration": integration, "permission": permission.value });
 
   xhttp.send(payload);
 }
@@ -24,14 +48,14 @@ function printPostResult(httpStatusCode){
       + "</div>";
 }
 
-function deleteIntegration(integrationId){
+function deleteIntegration(namespace, integrationId){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4) {
         printDeleteResult(this.status, integrationId);
     }
   };
-  xhttp.open("DELETE", "/namespace/default/integration/" + integrationId, true);
+  xhttp.open("DELETE", "/namespace/" + namespace + "/integration/" + integrationId, true);
 
   xhttp.send();
 }
@@ -45,14 +69,14 @@ function printDeleteResult(httpStatusCode, integrationId){
   }
 }
 
-function patchIntegration(name, integration){
+function patchIntegration(namespace, name, integration){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4) {
         printPatchResult(this.status);
     }
   };
-  xhttp.open("PATCH", "/namespace/default/integration/" + name, true);
+  xhttp.open("PATCH", "/namespace/" + namespace + "/integration/" + name, true);
   xhttp.setRequestHeader("Content-Type", "application/json");
   var payload = JSON.stringify({ "integration": integration });
 

@@ -2,7 +2,6 @@
 	<html>
 	<head>
 		<title>Integration: create</title>
-
 		<!-- code mirror -->
 		<link rel=stylesheet href="/codemirror-5.58.1/doc/docs.css">
 		<link rel="stylesheet" href="/codemirror-5.58.1/lib/codemirror.css">
@@ -12,40 +11,62 @@
 		<script src="/codemirror-5.58.1/addon/hint/anyword-hint.js"></script>
 		<script src="/codemirror-5.58.1/mode/groovy/groovy.js"></script>
 		<!-- code mirror -->
-
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
 		<script src="/js/client.js"></script>
 	</head>
 
 	<body>
 
-	<div class="content">
-		<h1>Create a new integration</h1>
-		<form>
-			<input id="NAME" name="name" type="text" placeholder="my-integration.groovy" />
-			<br><br>
-			<textarea id="INTEGRATION" name="integration" placeholder="from('timer:tick?period=3000')\n  .setBody().constant('Hello world from Camel K!')\n  .to('log:info')\n"></textarea>
-			<br><br>
-			<div id="BUTTON">
-					<button onclick="postIntegration(getCode()); return false;">Create!</button>
-			</div>
-		</form>
-	</div>
+		<%- include('include/header'); -%>
+		<div class="body">
+			<%- include('include/nav'); -%>
+			<main class="article">
+				<h1>Create a new integration</h1>
+				<form>
+					<input id="USER" name="user" type="hidden" value="user" />
+					Name: <input id="NAME" name="name" type="text" placeholder="my-integration.groovy" />
+					<br><br>
+					Namespace permissions:
+					<select id="PERMISSION" name="permission">
+						<option selected="true">private</option>
+						<option>readonly</option>
+						<option>editor</option>
+					</select>
+					<br><br>
+					<div class="tabs">
+						<span class="selected">Groovy</span>
+						<span>Java</span>
+						<span>Javascript</span>
+						<span>YAML</span>
+					</div>
+					<textarea id="INTEGRATION" name="integration" placeholder="from('timer:tick?period=3000')\n  .setBody().constant('Hello world from Camel K!')\n  .to('log:info')\n"></textarea>
+					<div>Use CTRL+Space for typeahead suggestions</div>
+					<br><br>
+					<div id="BUTTON">
+							<button onclick="postIntegration('<%= namespace%>', getCode()); return false;">Run!</button>
+					</div>
+				</form>
+			</main>
+		</div>
 
-	<script>
-	 CodeMirror.commands.autocomplete = function(cm) {
-		 cm.showHint({hint: CodeMirror.hint.anyword});
-	 }
+		<%- include('include/footer'); -%>
 
-	 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
-		 lineNumbers: true,
-		 extraKeys: {"Ctrl-Space": "autocomplete"}
-	 });
+		<script>
+		 CodeMirror.commands.autocomplete = function(cm) {
+			 cm.showHint({hint: CodeMirror.hint.anyword});
+		 }
 
-	 function getCode(){
-		 var text = editor.getValue();
-		 return text;
-	 }
- </script>
+		 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
+			 lineNumbers: true,
+			 extraKeys: {"Ctrl-Space": "autocomplete"}
+		 });
+
+		 function getCode(){
+			 var text = editor.getValue();
+			 return text;
+		 }
+	 </script>
 
 </body>
 </html>

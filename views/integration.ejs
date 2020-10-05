@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>Integration: <%=metadata.name%></title>
+		<title>Integration: <%= integration.metadata.name%></title>
 		<!-- code mirror -->
 		<link rel=stylesheet href="/codemirror-5.58.1/doc/docs.css">
 		<link rel="stylesheet" href="/codemirror-5.58.1/lib/codemirror.css">
@@ -11,49 +11,86 @@
 		<script src="/codemirror-5.58.1/addon/hint/anyword-hint.js"></script>
 		<script src="/codemirror-5.58.1/mode/groovy/groovy.js"></script>
 		<!-- code mirror -->
-
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
 		<script src="/js/client.js"></script>
+		<script type=text/javascript>
+			window.onload = function() {
+			    var frameRefreshInterval = setInterval(function() {
+			        document.getElementById("IFRAME").src = document.getElementById("IFRAME").src
+			    }, 2000);
+			    // any other code
+			}
+		</script>
 	</head>
 
 	<body>
 
-	<div class="content">
-		<h1><%=metadata.name%></h1>
-		<div>Status: <%=status.phase%></div>
-		<div>Camel K version: <%=status.version%></div>
-		<h2>Sources</h2>
-		<% for(var i=0; i < spec.sources.length; i++) {
-			%>
-			<div><%= spec.sources[i].name%></div>
-			<textarea id="INTEGRATION"><%= spec.sources[i].content%></textarea>
-			<br><br>
-			<div id="BUTTON">
-					<button onclick="patchIntegration('<%=metadata.name%>', getCode()); return false;">Update</button>
-			</div>
-			<hr>
-		<% } %>
-		<h2>List of dependency used</h2>
-		<% for(var i=0; i < status.dependencies.length; i++) {
-			%>
-			<div><%= status.dependencies[i]%></div>
-		<% } %>
-	</div>
+		<%- include('include/header'); -%>
+		<div class="body">
+			<%- include('include/nav'); -%>
+			<main class="article">
+				<h1><%= integration.metadata.name%></h1>
+				<div>Status: <%= integration.status.phase%></div>
+				<div>Pods (1): <%= pod %></div>
+				<div>Camel K version: <%= integration.status.version%></div>
+				<hr>
+				<div class="left-pane">
+					<h2>Sources</h2>
+					<% for(var i=0; i < integration.spec.sources.length; i++) {
+						%>
+						<div>Name: <%= integration.spec.sources[i].name%></div>
+						<div>Created by: <%= integration.metadata.labels.owner %></div>
+						<div>Namespace permissions: <%= integration.metadata.labels.permission %></div>
+						<br><br>
+						<div class="tabs">
+							<span class="selected">Groovy</span>
+							<span>Java</span>
+							<span>Javascript</span>
+							<span>YAML</span>
+						</div>
+						<textarea id="INTEGRATION"><%= integration.spec.sources[i].content%></textarea>
+						<div>Use CTRL+Space for typeahead suggestions</div>
+						<br><br>
+						<%if (integration.metadata.labels.owner == user || integration.metadata.labels.permission == "editor"){
+							%>
+							<div id="BUTTON">
+									<button onclick="patchIntegration('<%= namespace %>', '<%= integration.metadata.name %>', getCode()); return false;">Update</button>
+							</div>
+							<%
+						}
+					 } %>
+					<h2>List of dependency used</h2>
+					<% for(var i=0; i < integration.status.dependencies.length; i++) {
+						%>
+						<div><%= integration.status.dependencies[i]%></div>
+					<% } %>
+				</div>
 
-	<script>
-	 CodeMirror.commands.autocomplete = function(cm) {
-		 cm.showHint({hint: CodeMirror.hint.anyword});
-	 }
+				<!-- Watch integrations: http://localhost:8080/apis/camel.apache.org/v1/watch/namespaces/<%= namespace %>/integrations/<%= integration.metadata.name%> -->
 
-	 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
-		 lineNumbers: true,
-		 extraKeys: {"Ctrl-Space": "autocomplete"}
-	 });
+				<div class="right-pane">
+					<h2>Integration log</h2>
+					<iframe id="IFRAME" width="480" height="320" src="http://localhost:8080/api/v1/namespaces/<%= namespace %>/pods/<%= pod %>/log?tailLines=20"></iframe>
+				</div>
+			</main>
+		</div>
+		<%- include('include/footer'); -%>
+		<script>
+		 CodeMirror.commands.autocomplete = function(cm) {
+			 cm.showHint({hint: CodeMirror.hint.anyword});
+		 }
 
-	 function getCode(){
-    var text = editor.getValue();
-    return text;
-	 }
- </script>
+		 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
+			 lineNumbers: true,
+			 extraKeys: {"Ctrl-Space": "autocomplete"}
+		 });
+
+		 function getCode(){
+	    var text = editor.getValue();
+	    return text;
+		 }
+	 </script>
 
 </body>
 </html>

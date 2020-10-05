@@ -1,0 +1,73 @@
+h1{
+		font-size: 20px;
+		font-weight: bold;
+}
+
+a, a:visited, a:link {
+    color: #333;
+}
+
+.login{
+	float:right;
+	margin-right: 40px;
+}
+
+.loginpage{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.loginlabel{
+	margin-bottom:10px;
+}
+
+.nav-container{
+	margin-top:20px;
+	font-size: 20px;
+}
+
+.nav-container div{
+	padding:10px;
+}
+
+.header{
+	margin-top:0px;
+	height: 40px;
+}
+
+.logo{
+	float: left;
+	margin-left: 20px;
+}
+
+.list li{
+	margin: 10px 0px;
+}
+
+.tabs{
+	margin:0px;
+	border-bottom:1px solid #c0c0c0;
+}
+
+.tabs span{
+	border-radius: 5px 5px 0px 0px;
+	border: 1px solid #c0c0c0;
+	padding: 5px;
+}
+
+.tabs span.selected{
+	background-color: #cccccc;
+}
+
+.left-pane{
+	margin: 5px;
+	width: 500px;
+	float:left;
+}
+
+.right-pane{
+	margin: 5px;
+	width: 500px;
+	float:right;
+}

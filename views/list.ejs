@@ -2,28 +2,46 @@
 	<html>
 	<head>
 		<title>List of integrations for <%= namespace%> namespace</title>
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
 		<script src="/js/client.js"></script>
 	</head>
 
 	<body>
 
-	<div class="content">
-		<h1>List of integrations for <%= namespace%> namespace</h1>
-		<ul class="list">
-			<% for(var i=0; i < integrations.length; i++) {
-				%>
-				<li id="<%= integrations[i].metadata.name %>">
-					<div class="list-li-title">
-						<%= integrations[i].metadata.name %>
-						[<%= integrations[i].status.phase %>] -
-						[<a href="/namespace/<%= namespace%>/integration/<%= integrations[i].metadata.name%>">edit</a>]
-						[<a href="#" onclick="deleteIntegration('<%= integrations[i].metadata.name %>'); return false;">delete</a>]
-					</div>
+	<%- include('include/header'); -%>
+	<div class="body">
+		<%- include('include/nav'); -%>
+		<main class="article">
+			<h1>List of integrations</h1>
+			<ul class="list">
+				<%
+				var filteredIntegrations = integrations.filter(i => i.metadata.labels && (i.metadata.labels.owner == user || i.metadata.labels.permission != "private"));
+				for(var i=0; i < filteredIntegrations.length; i++) {
+					%>
+					<li id="<%= filteredIntegrations[i].metadata.name %>">
+						<div class="list-li-title">
+							<%= filteredIntegrations[i].metadata.name %>
+							[<%= filteredIntegrations[i].metadata.labels.owner %>]
+							[<%= filteredIntegrations[i].status.phase %>] -
+							[<a href="/namespace/<%= namespace %>/integration/<%= filteredIntegrations[i].metadata.name %>">edit</a>]
+							<%
+							if (filteredIntegrations[i].metadata.labels.owner == user || filteredIntegrations[i].metadata.labels.permission == "editor"){
+								%>
+								[<a href="#" onclick="deleteIntegration('<%= namespace %>', '<%= filteredIntegrations[i].metadata.name %>'); return false;">delete</a>]
+							<%
+							}
+							%>
+						</div>
+					</li>
+				<% } %>
+				<li>
+					<button><a href="/namespace/<%= namespace %>/create">+ new integration</a></button>
 				</li>
-			<% } %>
-		</ul>
-		<div><a href="./create">+ Create a new integration</a></div>
+			</ul>
+		</main>
 	</div>
 
+	<%- include('include/footer'); -%>
 </body>
 </html>

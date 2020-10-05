@@ -2,23 +2,31 @@
 	<html>
 	<head>
 		<title>Camel Konsole</title>
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
 	</head>
 
 	<body>
 
-	<div class="content">
-		<h1>List of available namespaces</h1>
-		<ul class="list">
-			<% for(var i=0; i < namespaces.length; i++) {
-				%>
-				<li>
-					<div class="list-li-title">
-						<a href="/namespace/<%= namespaces[i].metadata.name %>/"><%= namespaces[i].metadata.name %></a>
-					</div>
-				</li>
-			<% } %>
-		</ul>
+	<%- include('include/header'); -%>
+	<div class="body">
+		<%- include('include/nav-empty'); -%>
+		<main class="article">
+			<h1>Select a namespace</h1>
+			<ul class="list">
+				<% for(var i=0; i < namespaces.length; i++) {
+					%>
+					<li>
+						<div class="list-li-title">
+							<a href="/namespace/<%= namespaces[i].metadata.name %>/"><%= namespaces[i].metadata.name %></a>
+						</div>
+					</li>
+				<% } %>
+			</ul>
+		</main>
 	</div>
+
+	<%- include('include/footer'); -%>
 
 </body>
 </html>
