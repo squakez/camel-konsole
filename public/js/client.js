@@ -93,3 +93,7 @@ function printPatchResult(httpStatusCode){
       + message
       + "</div>";
 }
+
+function toDiagram(source){
+  document.getElementById("DIAGRAM").innerHTML = "graph LR;A-->B;";
+}

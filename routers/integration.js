@@ -82,9 +82,41 @@ router.get("/namespace/:namespace/integration/:name", (req, res) => {
       }
     };
     util.getJSON(podOptions, (statusCode2, result2) => {
+      var diagram;
       var podName = getPodName(result2);
-      res.render("integration", {namespace: namespace, integration: result, user: user, pod: podName});
+      try {
+        diagram = getDiagram(result.spec.sources[0].content);
+      } catch (error) {
+        console.error(error);
+      }
+      res.render("integration", {namespace: namespace, integration: result, user: user, pod: podName, diagram: diagram});
     });
+  });
+
+});
+
+router.get("/namespace/:namespace/integration/:name/diagram", (req, res) => {
+  var namespace = req.params.namespace;
+  var user = req.cookies.user;
+  var name = req.params.name;
+  const options = {
+    host: 'localhost',
+    port: 8080,
+    path: '/apis/camel.apache.org/v1/namespaces/' + namespace + '/integrations/' + name,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  util.getJSON(options, (statusCode, result) => {
+    var diagram;
+    try {
+      diagram = getDiagram(result.spec.sources[0].content);
+    } catch (error) {
+      console.error(error);
+    }
+    res.render("diagram", {namespace: namespace, integration: result, user: user, diagram: diagram});
   });
 
 });
@@ -201,6 +233,25 @@ function getFromPatchTemplate(name, integration){
         ]
      }
   }
+}
+
+function getDiagram(source){
+  var oneLineSource = source.replace(/\r?\n|\r/g,"");
+  oneLineSource = oneLineSource.replace(/\s/g,"");
+  oneLineSource = oneLineSource.replace(/\'/g,"\"");
+  var myRegexp = /from\(\"(.+?)\"\)(\.([^(]+).+?)?(\.to\(\"(.+?)\"\))/g;
+  var match = myRegexp.exec(oneLineSource);
+  var from = match[1];
+  var middle = match[3];
+  var to = match[5];
+  var diagram="graph LR;";
+  if(middle){
+    diagram += "From(" + from + ") --> Middle>" + middle + "];"
+    diagram += "Middle --> To(" + to + ");"
+  } else {
+    diagram += "From(" + from + ") --> To(" + to + ");"
+  }
+  return diagram;
 }
 
 module.exports = router

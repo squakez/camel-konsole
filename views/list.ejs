@@ -13,32 +13,38 @@
 	<div class="body">
 		<%- include('include/nav'); -%>
 		<main class="article">
-			<h1>List of integrations</h1>
-			<ul class="list">
+			<h1><%= namespace%> > all</h1>
+			<table class="list">
+				<tr>
+					<th>Name</th>
+					<th>Phase</th>
+					<th>Owner</th>
+					<th>Actions</th>
+				</tr>
 				<%
 				var filteredIntegrations = integrations.filter(i => i.metadata.labels && (i.metadata.labels.owner == user || i.metadata.labels.permission != "private"));
 				for(var i=0; i < filteredIntegrations.length; i++) {
 					%>
-					<li id="<%= filteredIntegrations[i].metadata.name %>">
-						<div class="list-li-title">
-							<%= filteredIntegrations[i].metadata.name %>
-							[<%= filteredIntegrations[i].metadata.labels.owner %>]
-							[<%= filteredIntegrations[i].status.phase %>] -
-							[<a href="/namespace/<%= namespace %>/integration/<%= filteredIntegrations[i].metadata.name %>">edit</a>]
+					<tr id="<%= filteredIntegrations[i].metadata.name %>">
+						<td><%= filteredIntegrations[i].metadata.name %></td>
+						<td><%= filteredIntegrations[i].status.phase %></td>
+						<td><%= filteredIntegrations[i].metadata.labels.owner %></td>
+						<td>
+							<a href="/namespace/<%= namespace %>/integration/<%= filteredIntegrations[i].metadata.name %>">edit</a>
 							<%
 							if (filteredIntegrations[i].metadata.labels.owner == user || filteredIntegrations[i].metadata.labels.permission == "editor"){
 								%>
-								[<a href="#" onclick="deleteIntegration('<%= namespace %>', '<%= filteredIntegrations[i].metadata.name %>'); return false;">delete</a>]
+								| <a href="#" onclick="deleteIntegration('<%= namespace %>', '<%= filteredIntegrations[i].metadata.name %>'); return false;">delete</a>
 							<%
 							}
 							%>
-						</div>
-					</li>
+						</td>
+					</tr>
 				<% } %>
-				<li>
-					<button><a href="/namespace/<%= namespace %>/create">+ new integration</a></button>
-				</li>
-			</ul>
+				<tr>
+					<td colspan="4"><button><a href="/namespace/<%= namespace %>/create">+ new integration</a></button></td>
+				</tr>
+			</table>
 		</main>
 	</div>
 

@@ -41,8 +41,23 @@ a, a:visited, a:link {
 	margin-left: 20px;
 }
 
-.list li{
+table
+{
+ border-collapse: separate;
+ border-spacing: 0 15px;
+}
+
+.list{
 	margin: 10px 0px;
+	text-align: left;
+}
+
+.list tr{
+	padding-top: 20px;
+}
+
+.list tr td{
+	padding-right: 40px;
 }
 
 .tabs{
