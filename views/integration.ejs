@@ -64,12 +64,29 @@
 					<h2>Integration log</h2>
 					<iframe id="IFRAME" width="100%" height="320" src="http://localhost:8080/api/v1/namespaces/<%= namespace %>/pods/<%= pod %>/log?tailLines=20"></iframe>
 					<hr>
-					<h2>List of dependency used</h2>
+					<!-- Traits -->
+					<%
+					var traits = integration.spec.traits;
+					if (traits){
+					%>
+						<h2>Traits</h2>
+						<%
+						for (var key in traits) {
+						    if (traits.hasOwnProperty(key)) {
+									%>
+									<div><%= key %></div>
+									<%
+						    }
+						}
+					}
+					%>
+
+					<!-- Dependencies -->
+					<h2>Dependencies</h2>
 					<% for(var i=0; i < integration.status.dependencies.length; i++) {
 						%>
 						<div><%= integration.status.dependencies[i]%></div>
 					<% } %>
-					<h2>Traits</h2>
 				</div>
 				<!-- Watch integrations: http://localhost:8080/apis/camel.apache.org/v1/watch/namespaces/<%= namespace %>/integrations/<%= integration.metadata.name%> -->
 			</main>

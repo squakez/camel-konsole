@@ -16,6 +16,8 @@ app.use(cookieParser());
 
 app.use(require('./routers/login'));
 app.use(require('./routers/integration'));
+app.use(require('./routers/kamelets'));
+app.use(require('./routers/knative'));
 
 app.listen(3000, function () {
   console.log("Listening on 3000");

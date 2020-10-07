@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>List of Kamelets</title>
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
+		<script src="/js/client.js"></script>
+	</head>
+	<body>
+
+	<%- include('../include/header'); -%>
+	<div class="body">
+		<%- include('../include/nav'); -%>
+		<main class="article">
+			<h1><%= namespace %> > all</h1>
+			<table class="list">
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Owner</th>
+					<th>Actions</th>
+				</tr>
+				<tr>
+					<td><img src="/img/telegram.webp" width="64" height="64"></td>
+					<td>telegram-text-source</td>
+					<td>developer</td>
+					<td>
+						<a href="/kamelets/telegram-text-source">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td><img src="/img/log.png" width="64" height="64"></td>
+					<td>company-log-sink</td>
+					<td>developer</td>
+					<td>
+						<a href="/kamelets/company-log-sink">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4"><button><a href="#">+ new kamelet</a></button>
+					<button><a target="_blank" href="https://kamelets.nicolaferraro.me/">+ import from Kamelet Hub</a></button></td>
+				</tr>
+			</table>
+		</main>
+	</div>
+
+	<%- include('../include/footer'); -%>
+</body>
+</html>

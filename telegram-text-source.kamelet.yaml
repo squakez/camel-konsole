@@ -1,0 +1,44 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: telegram-text-source
+  annotations:
+    camel.apache.org/kamelet.icon: "data:image/svg+xml;base64,PD94bW..."
+  labels:
+    camel.apache.org/kamelet.type: "source"
+spec:
+  definition:
+    title: "Telegram Text Source"
+    description: |-
+      Receive all text messages that people send to your telegram bot.
+
+      # Instructions
+      Description can include Markdown and guide the final user to configure the Kamelet parameters.
+    required:
+      - botToken
+    properties:
+      botToken:
+        title: Token
+        description: The token to access your bot on Telegram
+        type: string
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:password
+
+  types:
+    out:
+      mediaType: text/plain
+      # schema:
+  flow:
+    from:
+      uri: telegram:bots
+      parameters:
+        authorizationToken: "#property:botToken"
+      steps:
+        - convert-body-to:
+            type: "java.lang.String"
+            type-class: "java.lang.String"
+            charset: "UTF8"
+        - filter:
+            simple: "${body} != null"
+        - log: "${body}"
+        - to: "kamelet:sink"

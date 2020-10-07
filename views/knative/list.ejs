@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>List of Knative channels/sources</title>
+		<link rel="stylesheet" href="/css/camel.css" />
+		<link rel="stylesheet" href="/css/v0.0.1.css" />
+		<script src="/js/client.js"></script>
+	</head>
+	<body>
+
+	<%- include('../include/header'); -%>
+	<div class="body">
+		<%- include('../include/nav'); -%>
+		<main class="article">
+			<h1><%= namespace %> > knative > channels</h1>
+			<table class="list">
+				<tr>
+					<th>Name</th>
+					<th>Owner</th>
+					<th>Actions</th>
+				</tr>
+				<tr>
+					<td>aws-sqs</td>
+					<td>developer</td>
+					<td>
+						<a href="/knative/channel/aws-sqs">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td>kafka</td>
+					<td>developer</td>
+					<td>
+						<a href="/knative/channel/kafka">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4"><button><a href="#">+ new knative channel</a></button>
+				</tr>
+			</table>
+
+			<h1><%= namespace %> > knative > Camel sources</h1>
+			<table class="list">
+				<tr>
+					<th>Name</th>
+					<th>Owner</th>
+					<th>Actions</th>
+				</tr>
+				<tr>
+					<td>camel-aws-sqs-source</td>
+					<td>developer</td>
+					<td>
+						<a href="/knative/source/aws-sqs">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td>camel-kafka-source</td>
+					<td>developer</td>
+					<td>
+						<a href="/knative/source/kafka">edit</a> | <a href="#">delete</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4"><button><a href="#">+ new knative camel source</a></button>
+				</tr>
+			</table>
+		</main>
+	</div>
+
+	<%- include('../include/footer'); -%>
+</body>
+</html>

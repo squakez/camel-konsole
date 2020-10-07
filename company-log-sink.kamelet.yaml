@@ -1,0 +1,10 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: company-log-sink
+  annotations:
+    camel.apache.org/kamelet.icon: "data:image/svg+xml;base64,PD94bW..."
+  labels:
+    camel.apache.org/kamelet.type: "sink"
+spec:
+  # your spec here

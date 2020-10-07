@@ -9,7 +9,7 @@
 		<script src="/codemirror-5.58.1/lib/codemirror.js"></script>
 		<script src="/codemirror-5.58.1/addon/hint/show-hint.js"></script>
 		<script src="/codemirror-5.58.1/addon/hint/anyword-hint.js"></script>
-		<script src="/codemirror-5.58.1/mode/groovy/groovy.js"></script>
+		<script src="/codemirror-5.58.1/mode/yaml/yaml.js"></script>
 		<!-- code mirror -->
 		<link rel="stylesheet" href="/css/camel.css" />
 		<link rel="stylesheet" href="/css/v0.0.1.css" />
@@ -18,14 +18,14 @@
 
 	<body>
 
-		<%- include('include/header'); -%>
+		<%- include('../include/header'); -%>
 		<div class="body">
-			<%- include('include/nav'); -%>
+			<%- include('../include/nav'); -%>
 			<main class="article">
-				<h1>Create a new integration</h1>
+				<h1>Kamelet editor</h1>
 				<form>
 					<input id="USER" name="user" type="hidden" value="user" />
-					Name: <input id="NAME" name="name" type="text" placeholder="my-integration.groovy" />
+					Name: <%= name %>
 					<br><br>
 					Namespace permissions:
 					<select id="PERMISSION" name="permission">
@@ -35,37 +35,26 @@
 					</select>
 					<br><br>
 					<div class="tabs">
-						<span class="selected">Groovy</span>
-						<span>Java</span>
-						<span>Javascript</span>
-						<span>YAML</span>
+						<span class="selected">YAML</span>
 					</div>
-					<textarea id="INTEGRATION" name="integration" placeholder="from('timer:tick?period=3000')\n  .setBody().constant('Hello world from Camel K!')\n  .to('log:info')\n"></textarea>
+					<textarea id="KAMELET" name="kamelet"><%= source %></textarea>
 					<div>Use CTRL+Space for typeahead suggestions</div>
-					<h2>Advanced configuration</h2>
-					<h3>Traits</h3>
-					<div>
-						<span><input type="checkbox" name="traits"> 3 Scale</span>
-						<span><input type="checkbox" name="traits"> Affinity</span>
-						<span><input type="checkbox" name="traits"> Container</span>
-						<span>...</span>
-					</div>
 					<br><br>
 					<div id="BUTTON">
-							<button onclick="postIntegration('<%= namespace%>', getCode()); return false;">Run!</button>
+							<button onclick="#">Save!</button>
 					</div>
 				</form>
 			</main>
 		</div>
 
-		<%- include('include/footer'); -%>
+		<%- include('../include/footer'); -%>
 
 		<script>
 		 CodeMirror.commands.autocomplete = function(cm) {
 			 cm.showHint({hint: CodeMirror.hint.anyword});
 		 }
 
-		 var editor = CodeMirror.fromTextArea(document.getElementById("INTEGRATION"), {
+		 var editor = CodeMirror.fromTextArea(document.getElementById("KAMELET"), {
 			 lineNumbers: true,
 			 extraKeys: {"Ctrl-Space": "autocomplete"}
 		 });
