@@ -82,14 +82,8 @@ router.get("/namespace/:namespace/integration/:name", (req, res) => {
       }
     };
     util.getJSON(podOptions, (statusCode2, result2) => {
-      var diagram;
       var podName = getPodName(result2);
-      try {
-        diagram = getDiagram(result.spec.sources[0].content);
-      } catch (error) {
-        console.error(error);
-      }
-      res.render("integration", {namespace: namespace, integration: result, user: user, pod: podName, diagram: diagram});
+      res.render("integration", {namespace: namespace, integration: result, user: user, pod: podName});
     });
   });
 

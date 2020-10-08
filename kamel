@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function finish() {
+  echo "Stopping k8s api process..."
+  kill $PROXY
+  echo "Bye!"
+  exit
+}
+
+trap finish INT
+
+kubectl proxy --port=8080 &
+PROXY=$!
+node index.js start

@@ -27,7 +27,7 @@ function postIntegration(namespace, integration){
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4) {
         printPostResult(this.status);
-        location.href="./integration/"+name.value
+        location.href="./";
     }
   };
   xhttp.open("POST", "/namespace/" + namespace + "/integration", true);
